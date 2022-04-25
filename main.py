@@ -133,7 +133,7 @@ async def main():
             .time(datetime.utcnow(), WritePrecision.NS)
         write_api.write(bucket=BUCKET, record=POINT)
 
-        await asyncio.sleep(0.25)  # Pause between updates
+        await asyncio.sleep(1)  # Pause between updates
 
 if __name__ == "__main__":
     print("Sysmetrics is running...")
