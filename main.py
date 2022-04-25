@@ -29,10 +29,10 @@ async def main():
         diskio = psutil.disk_io_counters()
         net = psutil.net_io_counters()
         temps = psutil.sensors_temperatures()
-        
+
         try:
             current_temp = temps['cpu_thermal'][0].current
-        except:
+        except Exception:
             current_temp = None
 
         if DEBUG:
