@@ -29,6 +29,11 @@ async def main():
         diskio = psutil.disk_io_counters()
         net = psutil.net_io_counters()
         temps = psutil.sensors_temperatures()
+        
+        try:
+            current_temp = temps['cpu_thermal'][0].current
+        except:
+            current_temp = None
 
         if DEBUG:
             os.system('clear||cls')
@@ -38,7 +43,7 @@ async def main():
             print("[cpu]")
             print("cpu_percent", cpu)
             print("cpu_freq", cpufreq.current)
-            print("cpu_temp", temps['cpu_thermal'][0].current)
+            print("cpu_temp", current_temp)
             print("")
             # LOAD
             print("[load]")
@@ -94,7 +99,7 @@ async def main():
             .tag("device", DEVICE) \
             .field("cpu_percent", cpu) \
             .field("cpu_freq", cpufreq.current) \
-            .field("cpu_temp", temps['cpu_thermal'][0].current) \
+            .field("cpu_temp", current_temp) \
             .field("load_1m", load[0]) \
             .field("load_5m", load[1]) \
             .field("load_15m", load[2]) \
