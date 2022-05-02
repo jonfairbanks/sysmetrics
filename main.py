@@ -27,7 +27,6 @@ async def main():
         swap = psutil.swap_memory()
         disk = psutil.disk_usage('/')
         diskio = psutil.disk_io_counters()
-        net = psutil.net_io_counters()
         temps = psutil.sensors_temperatures()
 
         try:
@@ -82,17 +81,6 @@ async def main():
             print("disk_io_read_time", diskio.read_time)
             print("disk_io_write_time", diskio.write_time)
             print("")
-            # NET
-            print("[net]")
-            print("net_bytes_sent", net.bytes_sent)
-            print("net_bytes_recv", net.bytes_recv)
-            print("net_packets_sent", net.packets_sent)
-            print("net_packets_recv", net.packets_recv)
-            print("net_err_in", net.errin)
-            print("net_err_out", net.errout)
-            print("net_drop_in", net.dropin)
-            print("net_drop_out", net.dropout)
-            print("")
 
         # Write data to InfluxDB
         POINT = Point("system-metrics") \
@@ -122,14 +110,6 @@ async def main():
             .field("disk_io_write_bytes", diskio.write_bytes) \
             .field("disk_io_read_time", diskio.read_time) \
             .field("disk_io_write_time", diskio.write_time) \
-            .field("net_bytes_sent", net.bytes_sent) \
-            .field("net_bytes_recv", net.bytes_recv) \
-            .field("net_packets_sent", net.packets_sent) \
-            .field("net_packets_recv", net.packets_recv) \
-            .field("net_err_in", net.errin) \
-            .field("net_err_out", net.errout) \
-            .field("net_drop_in", net.dropin) \
-            .field("net_drop_out", net.dropout) \
             .time(datetime.utcnow(), WritePrecision.NS)
         write_api.write(bucket=BUCKET, record=POINT)
 
